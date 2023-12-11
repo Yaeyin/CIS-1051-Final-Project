@@ -1,5 +1,6 @@
 import pygame
 import sys
+from pygame import mixer
 
 pygame.init()
 
@@ -7,6 +8,9 @@ screen_width, screen_height = 800, 600
 FPS = 60
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+
+mixer.music.load('combat.wav')
+mixer.music.play(-1)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pokedex Start Menu")
