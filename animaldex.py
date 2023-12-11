@@ -1,6 +1,5 @@
 import pygame
 import sys
-from pygame import mixer
 
 pygame.init()
 
@@ -9,14 +8,44 @@ FPS = 60
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-mixer.music.load('combat.wav')
-mixer.music.play(-1)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pokedex Start Menu")
 clock = pygame.time.Clock()
 
 font = pygame.font.Font(None, 36)
+
+class Character:
+    def __init__(self, x, y, health, stamina):
+        self.rect = pygame.Rect(x, y, 100, 20)
+        self.health = health
+        self.stamina = stamina
+
+    def draw(self):
+        pygame.draw.rect(screen, BLACK, self.rect)
+        health_text = font.render(f"Health: {self.health}/100", True, BLACK)
+        stamina_text = font.render(f"Stamina: {self.stamina}/100", True, BLACK)
+        screen.blit(health_text, (self.rect.x + 120, self.rect.y))
+        screen.blit(stamina_text, (self.rect.x + 120, self.rect.y + 30))
+
+class PokedexPage:
+    def __init__(self):
+        self.characters = [
+            Character(50, 50, 100, 80),
+            Character(50, 150, 80, 90),
+        ]
+
+    def handle_events(self, events):
+        for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+
+    def draw(self):
+        screen.fill(WHITE)
+
+        for character in self.characters:
+            character.draw()
 
 def draw_start_menu():
     screen.fill(WHITE)
@@ -31,23 +60,31 @@ def draw_start_menu():
     screen.blit(button_text, button_text_rect)
 
 def main():
-    running = True
+    current_state = "StartMenu"
 
-    while running:
-        for event in pygame.event.get():
+    while True:
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if screen_width // 2 - 100 <= x <= screen_width // 2 + 100 and screen_height // 2 <= y <= screen_height // 2 + 50:
-                    running = False  # replace to goto pokedex page
+                pygame.quit()
+                sys.exit()
 
-        draw_start_menu()
+        if current_state == "StartMenu":
+            for event in events:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = event.pos
+                    if screen_width // 2 - 100 <= x <= screen_width // 2 + 100 and screen_height // 2 <= y <= screen_height // 2 + 50:
+                        current_state = "PokedexPage"
+
+            draw_start_menu()
+
+        elif current_state == "PokedexPage":
+            pokedex_page = PokedexPage()
+            pokedex_page.handle_events(events)
+            pokedex_page.draw()
+
         pygame.display.flip()
         clock.tick(FPS)
-
-    pygame.quit()
-    sys.exit()
 
 if __name__ == "__main__":
     main()
