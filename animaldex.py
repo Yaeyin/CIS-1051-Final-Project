@@ -3,42 +3,47 @@ import sys
 
 pygame.init()
 
-screen_width = 800
-screen_height = 600
+screen_width, screen_height = 800, 600
+FPS = 60
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Start Menu')
+pygame.display.set_caption("Pokedex Start Menu")
+clock = pygame.time.Clock()
 
-def draw_button():
-    button_width = 200
-    button_height = 50
-    button_color = (255, 0, 0)
-    button_x = (screen_width - button_width) // 2
-    button_y = (screen_height - button_height) // 2
+font = pygame.font.Font(None, 36)
 
-    pygame.draw.rect(screen, button_color, (button_x, button_y, button_width, button_height))
+def draw_start_menu():
+    screen.fill(WHITE)
+    
+    text = font.render("Pokedex", True, BLACK)
+    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 3))
+    screen.blit(text, text_rect)
 
-    return pygame.Rect(button_x, button_y, button_width, button_height)
+    pygame.draw.rect(screen, BLACK, (screen_width // 2 - 100, screen_height // 2, 200, 50))
+    button_text = font.render("Go to Pokedex", True, WHITE)
+    button_text_rect = button_text.get_rect(center=(screen_width // 2, screen_height // 2 + 25))
+    screen.blit(button_text, button_text_rect)
 
-def main_menu():
-    while True:
+def main():
+    running = True
+
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if button_rect.collidepoint(event.pos):
-                    next_page()
+                x, y = event.pos
+                if screen_width // 2 - 100 <= x <= screen_width // 2 + 100 and screen_height // 2 <= y <= screen_height // 2 + 50:
+                    running = False  # replace to goto pokedex page
 
-        screen.fill((0, 255, 0))
-        button_rect = draw_button()
-
+        draw_start_menu()
         pygame.display.flip()
+        clock.tick(FPS)
 
-def next_page():
-	screen.fill((0, 0, 255))
-	pygame.display.flip()
-	pygame.time.delay(1000000)
+    pygame.quit()
+    sys.exit()
 
 if __name__ == "__main__":
-	main_menu()
+    main()
