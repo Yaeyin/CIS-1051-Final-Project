@@ -7,30 +7,23 @@ screen_width, screen_height = 800, 600
 FPS = 60
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+RED = (255, 0, 0)
 
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pokedex Start Menu")
 clock = pygame.time.Clock()
 
-#code for collision
-
 font = pygame.font.Font(None, 36)
 
 pos = pygame.mouse.get_pos()
-"""
-for obstacle in obstacles:
-        if obstacle.collidepoint(pos):
-            pygame.draw.rect(screen, RED, obstacle)
-        else:
-            pygame.draw.rect(screen, GREEN, obstacle)
-"""
 
 class Character:
-    def __init__(self, x, y, health, stamina):
+    def __init__(self, x, y, health, stamina, image_path):
         self.rect = pygame.Rect(x, y, 100, 20)
         self.health = health
         self.stamina = stamina
+        self.image = pygame.image.load(image_path)
 
     def draw(self):
         pygame.draw.rect(screen, BLACK, self.rect)
@@ -38,12 +31,14 @@ class Character:
         stamina_text = font.render(f"Stamina: {self.stamina}/100", True, BLACK)
         screen.blit(health_text, (self.rect.x + 120, self.rect.y))
         screen.blit(stamina_text, (self.rect.x + 120, self.rect.y + 30))
+        screen.blit(self.image, self.rect.topleft)
 
 class PokedexPage:
     def __init__(self):
+        self.background = pygame.image.load("background.png").convert()
         self.characters = [
-            Character(50, 50, 100, 80),
-            Character(50, 150, 80, 90),
+            Character(50, 50, 100, 80, "elephant.png"),
+            Character(450, 350, 80, 100, "neweagle.png"),
         ]
 
     def handle_events(self, events):
@@ -53,16 +48,16 @@ class PokedexPage:
                 sys.exit()
 
     def draw(self):
-        screen.fill(WHITE)
+        screen.blit(self.background, (0, 0))
 
         for character in self.characters:
             character.draw()
 
 def draw_start_menu():
     pos = pygame.mouse.get_pos()
-    screen.fill(WHITE)
+    screen.fill(RED)
     
-    text = font.render("Pokedex", True, BLACK)
+    text = font.render("Pokedex", True, WHITE)
     text_rect = text.get_rect(center=(screen_width // 2, screen_height // 3))
     screen.blit(text, text_rect)
 
