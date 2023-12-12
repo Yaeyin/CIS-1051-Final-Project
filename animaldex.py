@@ -37,8 +37,10 @@ class PokedexPage:
     def __init__(self):
         self.background = pygame.image.load("background.png").convert()
         self.characters = [
-            Character(50, 50, 100, 80, "elephant.png"),
-            Character(450, 350, 80, 100, "neweagle.png"),
+            Character(50, 50, 100, 80, "8bit_elephant.png"),
+            Character(450, 350, 80, 100, "8biteagle.png"),
+            Character(50, 350, 80, 100, "8bitporcupine.png"),
+            Character(450, 50, 80, 100, "8bitBear.png"),
         ]
 
     def handle_events(self, events):
