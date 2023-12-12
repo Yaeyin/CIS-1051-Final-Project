@@ -14,11 +14,11 @@ pygame.display.set_caption("Pokedex Start Menu")
 clock = pygame.time.Clock()
 
 #code for collision
-"""
+
 font = pygame.font.Font(None, 36)
 
 pos = pygame.mouse.get_pos()
-
+"""
 for obstacle in obstacles:
         if obstacle.collidepoint(pos):
             pygame.draw.rect(screen, RED, obstacle)
