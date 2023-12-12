@@ -14,6 +14,7 @@ pygame.display.set_caption("Pokedex Start Menu")
 clock = pygame.time.Clock()
 
 #code for collision
+"""
 font = pygame.font.Font(None, 36)
 
 pos = pygame.mouse.get_pos()
@@ -23,7 +24,7 @@ for obstacle in obstacles:
             pygame.draw.rect(screen, RED, obstacle)
         else:
             pygame.draw.rect(screen, GREEN, obstacle)
-
+"""
 
 class Character:
     def __init__(self, x, y, health, stamina):
@@ -58,6 +59,7 @@ class PokedexPage:
             character.draw()
 
 def draw_start_menu():
+    pos = pygame.mouse.get_pos()
     screen.fill(WHITE)
     
     text = font.render("Pokedex", True, BLACK)
@@ -68,6 +70,10 @@ def draw_start_menu():
     button_text = font.render("Go to Pokedex", True, WHITE)
     button_text_rect = button_text.get_rect(center=(screen_width // 2, screen_height // 2 + 25))
     screen.blit(button_text, button_text_rect)
+
+    if button_text_rect.collidepoint(pos):
+        pygame.draw.rect(screen, WHITE, button_text_rect)
+        screen.blit(font.render("Go to Pokedex", True, BLACK), button_text_rect)    
 
 def main():
     current_state = "StartMenu"
